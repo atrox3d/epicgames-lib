@@ -34,12 +34,11 @@ def get_date_and_title(soup:BeautifulSoup) -> Generator[list[datetime.datetime |
         txt = [td.text for td in tds]
         if len(txt):
             dt, title = txt
-            # dt = datetime.datetime.strptime(dt, '%m/%d/%Y')
-            yield format_date(dt), title
+            yield dt, title
 
 if __name__ == '__main__':
     soup = get_soup('transactions.html')
 
     rows = get_date_and_title(soup)
-    for row in rows:
-        print(row)
+    for dt, title in rows:
+        print(format_date(dt), title)
