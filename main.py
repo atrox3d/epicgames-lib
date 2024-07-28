@@ -1,6 +1,8 @@
 from pathlib import Path
 from bs4 import BeautifulSoup
 import datetime
+from typing import Generator
+
 # import requests
 
 def get_html(filepath:str|Path) -> str:
@@ -20,13 +22,11 @@ def get_soup(filepath:str|Path) -> BeautifulSoup:
     soup = BeautifulSoup(html, 'html.parser')
     return soup
 
-if __name__ == '__main__':
-    # print(get_currency('USD', 'EUR'))
-    soup = get_soup('transactions.html')
-    # //table[contains(@class, "am")]//tr[@class="am-0"]
-    # rows = soup.find_all("tr", {"class": "am-0"})   
-    # for row in rows:
-    #     print(row)
+def format_date(date:str) -> str:
+    m, d, y = date.split('/')
+    return f'{y}/{m:>02}/{d:>02}'
+
+def get_date_and_title(soup:BeautifulSoup) -> Generator[list[datetime.datetime | str], None, None]:
     table = soup.select('table')[0]
     rows = table.select('[class=am-0]')
     for row in rows:
@@ -34,5 +34,12 @@ if __name__ == '__main__':
         txt = [td.text for td in tds]
         if len(txt):
             dt, title = txt
-            dt = datetime.datetime.strptime(dt, '%m/%d/%Y')
-            print(dt, title)
+            # dt = datetime.datetime.strptime(dt, '%m/%d/%Y')
+            yield format_date(dt), title
+
+if __name__ == '__main__':
+    soup = get_soup('transactions.html')
+
+    rows = get_date_and_title(soup)
+    for row in rows:
+        print(row)
