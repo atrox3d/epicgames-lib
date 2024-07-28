@@ -1,15 +1,7 @@
 from pathlib import Path
 from bs4 import BeautifulSoup
+import datetime
 # import requests
-
-
-def get_currency(in_currency, out_currency):
-    url = f'https://www.x-rates.com/calculator/?from={in_currency}&to={out_currency}&amount=1'
-    content = requests.get(url).text
-    soup = BeautifulSoup(content, 'html.parser')
-    rate = soup.find('span', class_='ccOutputRslt').get_text()
-    rate = float(rate[:-4])
-    return rate
 
 def get_html(filepath:str|Path) -> str:
     try:
@@ -40,4 +32,7 @@ if __name__ == '__main__':
     for row in rows:
         tds = row.select('td')[:2]
         txt = [td.text for td in tds]
-        print(txt)
+        if len(txt):
+            dt, title = txt
+            dt = datetime.datetime.strptime(dt, '%m/%d/%Y')
+            print(dt, title)
