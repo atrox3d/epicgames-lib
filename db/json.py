@@ -35,8 +35,8 @@ class JsonDb(Db):
         return (row for row in self.data)
     
     def titles(self) -> list[str]:
-        return [title for date, title in self.rows()]
-    
+        return [row['title'] for row in self.rows()]
+        
     def find_title(self, title:str) -> str:
         found = [_title for _title in self.titles()
                 if _title.lower() == title.lower()]

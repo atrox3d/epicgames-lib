@@ -75,7 +75,24 @@ def test_populate_save_load_rows():
     expected = [dict(date=date, title=title) for date, title in records]
     assert list(db.rows()) == expected
 
+def test_titles():
+    db = JsonDb(JSON_DB_PATH)
+    db.add('20000101', 'Doom')
+    db.add('20000101', 'Quake')
+    print(db.titles())
+    assert db.titles() == ['Doom', 'Quake']
 
+def test_find_title():
+    db = JsonDb(JSON_DB_PATH)
+    db.add('20000101', 'Doom')
+    db.add('20000101', 'Quake')
+    assert db.find_title('doom') == 'Doom'
+
+def test_title_like():
+    db = JsonDb(JSON_DB_PATH)
+    db.add('20000101', 'id Doom')
+    db.add('20000101', 'id Quake')
+    assert db.title_like('id') == ['id Doom', 'id Quake']
 
 
 
