@@ -1,4 +1,4 @@
-from db.json import JsonDb
+from db.jsondb import JsonDb
 from pathlib import Path
 import pytest
 
