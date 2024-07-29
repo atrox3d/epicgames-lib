@@ -8,7 +8,7 @@ def sqlite_db_path():
 
 @pytest.fixture
 def db(sqlite_db_path):
-    return SqliteDB(sqlite_db_path)
+    return SqliteDb(sqlite_db_path)
 
 @pytest.fixture
 def date():

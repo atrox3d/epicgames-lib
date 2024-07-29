@@ -48,9 +48,8 @@ class SqliteDb(Db):
         self.filepath = Path(filepath)
         self.db = sqlite3.connect(self.filepath)
 
-    def_
-
     def create(self):
+        pass
 
 if False:
     cur = sqlite3.connect('epicgames-lib.db').cursor()
