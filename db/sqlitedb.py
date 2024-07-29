@@ -46,10 +46,35 @@ class SqliteDb(Db):
     
     def __init__(self, filepath:str) -> None:
         self.filepath = Path(filepath)
-        self.db = sqlite3.connect(self.filepath)
+        # self.db = sqlite3.connect(self.filepath)
 
     def create(self):
         pass
+
+    def load(self):
+        return super().load()
+    
+    def save(self):
+        return super().save()
+    
+    def add(self, date, title):
+        return super().add(date, title)
+    
+    def populate(self, data):
+        return super().populate(data)
+    
+    def rows(self):
+        return super().rows()
+    
+    def titles(self):
+        return super().titles()
+    
+    def find_title(self, title):
+        return super().find_title(title)
+    
+    def title_like(self, contains):
+        return super().title_like(contains)
+
 
 if False:
     cur = sqlite3.connect('epicgames-lib.db').cursor()
