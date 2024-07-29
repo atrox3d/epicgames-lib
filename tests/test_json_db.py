@@ -1,10 +1,13 @@
+from json import JSONDecodeError
 from db.jsondb import JsonDb
 from pathlib import Path
 import pytest
 
+JSON_DB_PATH = 'test.json'
+
 @pytest.fixture
 def json_db_path():
-    return 'test.json'
+    return JSON_DB_PATH
 
 @pytest.fixture
 def db(json_db_path):
@@ -23,12 +26,21 @@ def records():
     return [['2024/08/01', 'geforce now'] for _ in range(10)]
 
 
+def teardown_function():
+    print(f'TEARDOWN_FUNCTION | deleting {JSON_DB_PATH}')
+    Path(JSON_DB_PATH).unlink(missing_ok=True)
+
 
 def test_can_instantiate_jsondb(json_db_path):
     db = JsonDb(json_db_path)
 
 def test_create_empty_db(db, json_db_path):
-    db.create()
+    db.create([])
+    assert Path(json_db_path).exists()
+    assert db.data == []
+
+def test_create_db_from_data(db, json_db_path, records):
+    db.create(records)
     assert Path(json_db_path).exists()
 
 def test_init_and_load_empty_db(db):

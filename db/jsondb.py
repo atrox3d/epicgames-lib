@@ -6,19 +6,25 @@ class JsonDb(Db):
     
     def __init__(self, filepath:str, load=False) -> None:
         self.filepath = Path(filepath)
+        self.filepath.touch(exist_ok=True)
         if load:
             self.load()
         else:
             self.data = []
 
-    def create(self):
-        # self.filepath.touch(exist_ok=True)
-        self.data = []
+    def create(self, data):
+        self.populate(data)
         self.save()
 
-    def load(self):
-        with open(self.filepath) as fp:
-            self.data = json.load(fp)
+    def load(self): 
+        try:
+            with open(self.filepath) as fp:
+                self.data = json.load(fp)
+        except json.JSONDecodeError as jde:
+            if jde.doc == '':
+                self.data = []
+            else:
+                raise
 
     def save(self):
         with open(self.filepath, 'w') as fp:
