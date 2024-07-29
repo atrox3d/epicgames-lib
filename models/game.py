@@ -6,5 +6,10 @@ class Game:
     title: str
     id: int = None
 
-    def dict(self):
+    def to_dict(self):
         return asdict(self)
+    
+    @classmethod
+    def from_dict(cls, game_dict):
+        return cls(**game_dict)
+
