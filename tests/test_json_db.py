@@ -3,6 +3,8 @@ from db.jsondb import JsonDb
 from pathlib import Path
 import pytest
 
+from models.game import Game
+
 JSON_DB_PATH = 'test.json'
 
 @pytest.fixture
@@ -57,36 +59,36 @@ def test_save_empty_db(db):
 
 def test_add_title(db, date, title):
     db.add(date, title)
-    assert db.data == [{'date': date, 'title': title}]
+    assert db.data == [Game(date, title)]
 
 def test_save_and_reload_title(db, date, title):
     db.add(date, title)
     db.save()
     db.load()
-    assert db.data == [{'date': date, 'title': title}]
+    assert db.data == [Game(date, title)]
 
 def test_populate_db(db, records):
     db.populate(records)
-    expected = [dict(date=date, title=title) for date, title in records]
+    expected = [Game(date=date, title=title) for date, title in records]
     assert db.data == expected
 
 def test_populate_save_and_load(db, records):
     db.populate(records)
     db.save()
     db.load()
-    expected = [dict(date=date, title=title) for date, title in records]
+    expected = [Game(date=date, title=title) for date, title in records]
     assert db.data == expected
 
 def test_populate_rows(db, records):
     db.populate(records)
-    expected = [dict(date=date, title=title) for date, title in records]
+    expected = [Game(date=date, title=title) for date, title in records]
     assert list(db.rows()) == expected
 
 def test_populate_save_load_rows(db, records):
     db.populate(records)
     db.save()
     db.load()
-    expected = [dict(date=date, title=title) for date, title in records]
+    expected = [Game(date=date, title=title) for date, title in records]
     assert list(db.rows()) == expected
 
 def test_titles(db):
