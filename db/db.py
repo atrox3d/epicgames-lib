@@ -5,11 +5,11 @@ class Db(ABC):
     @abstractmethod
     def create(self): pass
 
-    @abstractmethod
-    def load(self): pass
+    # @abstractmethod
+    # def load(self): pass
 
-    @abstractmethod
-    def save(self): pass
+    # @abstractmethod
+    # def save(self): pass
 
     @abstractmethod
     def add(self, date, title): pass
