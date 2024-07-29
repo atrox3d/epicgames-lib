@@ -1,6 +1,8 @@
 import json
 from pathlib import Path
 from .db import Db
+from models.game import Game
+
 
 class JsonDb(Db):
     
@@ -19,7 +21,11 @@ class JsonDb(Db):
     def load(self): 
         try:
             with open(self.filepath) as fp:
-                self.data = json.load(fp)
+                self.data = [
+                    Game.from_dict(game)
+                    for game in
+                    json.load(fp)
+                ]
         except json.JSONDecodeError as jde:
             if jde.doc == '':
                 self.data = []
@@ -28,20 +34,23 @@ class JsonDb(Db):
 
     def save(self):
         with open(self.filepath, 'w') as fp:
-            json.dump(self.data, fp)
+            json.dump(
+                [row.to_dict() for row in self.rows()], 
+                fp
+            )
 
     def add(self, date:str, title:str):
-        self.data.append(dict(date=date, title=title))
+        self.data.append(Game(date, title))
 
     def populate(self, data):
         for date, title in data:
             self.add(date, title)
     
-    def rows(self) -> list[list[str]]:
+    def rows(self) -> list[Game]:
         return (row for row in self.data)
     
     def titles(self) -> list[str]:
-        return [row['title'] for row in self.rows()]
+        return [row.title for row in self.rows()]
         
     def find_title(self, title:str) -> str:
         found = [_title for _title in self.titles()
