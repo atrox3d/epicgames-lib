@@ -82,14 +82,14 @@ def test_populate_save_and_load(db, records):
 def test_populate_rows(db, records):
     db.populate(records)
     expected = [Game(date=date, title=title) for date, title in records]
-    assert list(db.rows()) == expected
+    assert db.rows() == expected
 
 def test_populate_save_load_rows(db, records):
     db.populate(records)
     db.save()
     db.load()
     expected = [Game(date=date, title=title) for date, title in records]
-    assert list(db.rows()) == expected
+    assert db.rows() == expected
 
 def test_titles(db):
     db.add('20000101', 'Doom')

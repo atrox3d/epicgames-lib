@@ -47,10 +47,17 @@ class JsonDb(Db):
             self.add(date, title)
     
     def rows(self) -> list[Game]:
-        return (row for row in self.data)
+        return [row for row in self.data]
     
-    def titles(self) -> list[str]:
-        return [row.title for row in self.rows()]
+    def titles(self, remove_the=False) -> list[str]:
+        if remove_the:
+            return [
+                    row.title.lower().removeprefix('the ') + ', the'
+                    if row.title.lower().startswith('the')
+                    else row.title.lower()
+                    for row in self.rows()]
+        else:
+            return [row.title.lower() for row in self.rows()]
         
     def find_title(self, title:str) -> str:
         found = [_title for _title in self.titles()

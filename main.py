@@ -13,5 +13,11 @@ if __name__ == '__main__':
     #     print(formatting.format_date(dt), title)
     db = JsonDb('epicgames-library.json')
     db.create(rows)
-    match = db.title_like('tomb')
-    print(match)
+    print(len(db.rows()))
+
+    for title in sorted(db.titles(remove_the=True)):
+        print(title)
+
+    # matches = db.title_like('ghost')
+    # for match in matches:
+        # print(match)
