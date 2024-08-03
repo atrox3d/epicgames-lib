@@ -64,7 +64,7 @@ class JsonDb(Db):
                 if _title.lower() == title.lower()]
         return found[0] if found else None
     
-    def title_like(self, contains:str) -> list[str]:
+    def find_titles_like(self, contains:str) -> list[str]:
         return [title for title in self.titles()
                 if contains.lower() in title.lower()]
     

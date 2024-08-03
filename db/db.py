@@ -27,4 +27,4 @@ class Db(ABC):
     def find_title(self, title): pass
 
     @abstractmethod
-    def title_like(self, contains): pass
+    def find_titles_like(self, contains): pass

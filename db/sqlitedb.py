@@ -96,14 +96,24 @@ class SqliteDb(Db):
             return [Game(date, title, id) for id, date, title in cur.execute(sql).fetchall()]
     
     def titles(self):
-        return super().titles()
+        # with AutoClose(self.filepath) as cur:
+            # sql = "SELECT * FROM games"
+            # return [title for title in cur.execute(sql).fetchall()]
+        return [game.title for game in self.rows()]
     
     def find_title(self, title):
-        return super().find_title(title)
-    
-    def title_like(self, contains):
-        return super().title_like(contains)
+        with AutoClose(self.filepath) as cur:
+            sql = "SELECT title FROM games WHERE title = ?"
+            res =  cur.execute(sql, (title, )).fetchone()
+            return res[0] if res is not None else None
 
+    def find_titles_like(self, contains):
+        with AutoClose(self.filepath) as cur:
+            sql = "SELECT title FROM games WHERE title like ?"
+            res =  cur.execute(sql, (f'%{contains}%', )).fetchall()
+            # return res[0] if res is not None else None
+            titles = [result[0] for result in res]
+            return titles
 
 if False:
     cur = sqlite3.connect('epicgames-lib.db').cursor()
