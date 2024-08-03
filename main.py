@@ -11,11 +11,12 @@ if __name__ == '__main__':
     rows = scraping.get_date_and_title(soup)
     # for dt, title in rows:
     #     print(formatting.format_date(dt), title)
-    db = get_db('epicgames-library.db')
+    db = get_db('epicgames-library.json')
+    db.clear()
     db.populate(rows)
     print(len(db.rows()))
 
-    for title in sorted(db.titles(remove_the=True)):
+    for title in sorted(db.titles(natural=True)):
         print(title)
 
     # matches = db.title_like('ghost')

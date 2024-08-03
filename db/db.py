@@ -5,15 +5,18 @@ class Db(ABC):
 
     @classmethod
     def natural(cls, title:str) -> str:
-        articles = ['the', 'a']
+        articles = ['the', 'a', 'an']
         for article in articles:
             if title.startswith(f'{article} '):
                 title = title.removeprefix(f'{article} ')
-                title += f', {article}'
-        return title
+                title = title.rstrip() + f', {article}'
+        return title.rstrip()
 
     @abstractmethod
     def create(self): pass
+
+    @abstractmethod
+    def clear(self): pass
 
     # @abstractmethod
     # def load(self): pass
@@ -31,7 +34,7 @@ class Db(ABC):
     def rows(self): pass
 
     @abstractmethod
-    def titles(self): pass
+    def titles(self, natural): pass
 
     @abstractmethod
     def find_title(self, title): pass

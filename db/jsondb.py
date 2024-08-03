@@ -12,11 +12,14 @@ class JsonDb(Db):
         if load:
             self.load()
         else:
-            self.data = []
+            self.clear()
 
     def create(self):
         # self.populate(data)
         self.save()
+
+    def clear(self):
+        self.data = []
 
     def load(self): 
         try:
