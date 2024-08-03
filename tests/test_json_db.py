@@ -37,12 +37,13 @@ def test_can_instantiate_jsondb(json_db_path):
     db = JsonDb(json_db_path)
 
 def test_create_empty_db(db, json_db_path):
-    db.create([])
+    db.create()
     assert Path(json_db_path).exists()
     assert db.data == []
 
 def test_create_db_from_data(db, json_db_path, records):
-    db.create(records)
+    db.create()
+    db.populate(records)
     assert Path(json_db_path).exists()
 
 def test_init_and_load_empty_db(db):
@@ -105,7 +106,7 @@ def test_find_title(db):
 def test_title_like(db):
     db.add('20000101', 'id Doom')
     db.add('20000101', 'id Quake')
-    assert db.title_like('id') == ['id doom', 'id quake']
+    assert db.find_titles_like('id') == ['id doom', 'id quake']
 
 
 

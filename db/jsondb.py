@@ -14,8 +14,8 @@ class JsonDb(Db):
         else:
             self.data = []
 
-    def create(self, data):
-        self.populate(data)
+    def create(self):
+        # self.populate(data)
         self.save()
 
     def load(self): 
