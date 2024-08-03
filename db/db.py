@@ -3,6 +3,15 @@ from pathlib import Path
 
 class Db(ABC):
 
+    @classmethod
+    def natural(cls, title:str) -> str:
+        articles = ['the', 'a']
+        for article in articles:
+            if title.startswith(f'{article} '):
+                title = title.removeprefix(f'{article} ')
+                title += f', {article}'
+        return title
+
     @abstractmethod
     def create(self): pass
 

@@ -49,13 +49,9 @@ class JsonDb(Db):
     def rows(self) -> list[Game]:
         return [row for row in self.data]
     
-    def titles(self, remove_the=False) -> list[str]:
-        if remove_the:
-            return [
-                    row.title.lower().removeprefix('the ') + ', the'
-                    if row.title.lower().startswith('the')
-                    else row.title.lower()
-                    for row in self.rows()]
+    def titles(self, natural=False) -> list[str]:
+        if natural:
+            return [self.natural(row.title.lower()) for row in self.rows()]
         else:
             return [row.title.lower() for row in self.rows()]
         

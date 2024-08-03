@@ -67,7 +67,13 @@ def test_titles(empty_db):
     empty_db.add('20000101', 'Doom')
     empty_db.add('20000101', 'Quake')
     print(empty_db.titles())
-    assert empty_db.titles() == ['Doom', 'Quake']
+    assert empty_db.titles() == ['doom', 'quake']
+
+def test_natutal_titles(empty_db):
+    empty_db.add('20000101', 'the Doom')
+    empty_db.add('20000101', 'a Quake')
+    print(empty_db.titles(natural=True))
+    assert empty_db.titles(natural=True) == ['doom, the', 'quake, a']
 
 def test_find_title(empty_db):
     empty_db.add('20000101', 'Doom')

@@ -62,8 +62,11 @@ class SqliteDb(Db):
             sql = "SELECT * FROM games"
             return [Game(date, title, id) for id, date, title in cur.execute(sql).fetchall()]
     
-    def titles(self):
-        return [game.title for game in self.rows()]
+    def titles(self, natural=False):
+        if natural:
+            return [self.natural(row.title.lower()) for row in self.rows()]
+        else:
+            return [row.title.lower() for row in self.rows()]
     
     def find_title(self, title):
         with AutoClose(self.filepath) as cur:
