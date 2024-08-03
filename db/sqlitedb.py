@@ -20,39 +20,6 @@ class AutoClose:
         self.cursor.close()
         self.conn.close()
 
-# You'll then call your class like this:
-
-# with SafeCursor(conn) as c:
-#     c.execute(...)
-
-# @contextmanager
-# def db_ops(db_name):
-#     conn = sqlite3.connect(db_name)
-#     try:
-#         cur = conn.cursor()
-#         yield cur
-#     except Exception as e:
-#         # do something with exception
-#         conn.rollback()
-#         raise e
-#     else:
-#         conn.commit()
-#     finally:
-#         conn.close()
-# with db_ops('dbpath') as cur:
-    # cur.
-
-# def x():
-#     with closing(sqlite3.connect("aquarium.db")) as connection:
-#         with closing(connection.cursor()) as cursor:
-#             rows = cursor.execute("SELECT 1").fetchall()
-#             print(rows)
-
-# def dec(meth):
-#     def wrap(*args, **kwargs):
-#         print(f'method: {args}, {kwargs}')
-#         meth(*args, **kwargs)
-#     return wrap
 
 class SqliteDb(Db):
     
@@ -96,9 +63,6 @@ class SqliteDb(Db):
             return [Game(date, title, id) for id, date, title in cur.execute(sql).fetchall()]
     
     def titles(self):
-        # with AutoClose(self.filepath) as cur:
-            # sql = "SELECT * FROM games"
-            # return [title for title in cur.execute(sql).fetchall()]
         return [game.title for game in self.rows()]
     
     def find_title(self, title):
@@ -114,22 +78,3 @@ class SqliteDb(Db):
             # return res[0] if res is not None else None
             titles = [result[0] for result in res]
             return titles
-
-if False:
-    cur = sqlite3.connect('epicgames-lib.db').cursor()
-    sql = "CREATE TABLE IF NOT EXISTS games (" \
-            "id INTEGER PRIMARY KEY," \
-            "title VARCHAR(250) NOT NULL UNIQUE," \
-            ")"
-
-
-    new_rows = [
-        ('100.100.100.100', 'a.b.c', 100),
-        ('200.200.200.200', 'd.e.f', 200),
-    ]
-
-    cur.executemany(
-        'INSERT into ips VALUES(?, ?, ?)',
-        new_rows
-    )
-    cur.connection.commit()
